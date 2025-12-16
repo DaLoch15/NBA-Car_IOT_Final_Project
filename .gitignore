@@ -1,0 +1,22 @@
+# Virtual environment
+venv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Generated data files
+raw_scoreboard_data.json
+
+# macOS system files
+.DS_Store
+
+# IDE settings (optional - remove if you want to track VS Code settings)
+.vscode/
+
+# Log files
+*.log
+
+# Environment variables (if you add any later)
+.env
