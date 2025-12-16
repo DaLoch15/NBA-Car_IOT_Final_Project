@@ -1,34 +1,23 @@
 import picar_4wd as fc
 import time
 
-# Configuration - ADJUST THESE VALUES
-POWER = 50              # Motor power (0-100). Keep consistent for predictable results.
-TEST_DURATION = 0.5     # Starting guess: seconds to run motors
+POWER = 50
+TEST_DURATION = 0.5
 
+# moves the car forward for a given duration
 def move_forward(duration, power=POWER):
-    """
-    Move the car forward for a specified duration.
-    """
-    print(f"Moving FORWARD at power {power} for {duration} seconds...")
     fc.forward(power)
     time.sleep(duration)
     fc.stop()
-    print("Stopped.")
 
+# moves the car backward for a given duration
 def move_backward(duration, power=POWER):
-    """
-    Move the car backward for a specified duration.
-    """
-    print(f"Moving BACKWARD at power {power} for {duration} seconds...")
     fc.backward(power)
     time.sleep(duration)
     fc.stop()
-    print("Stopped.")
 
+# interactive calibration mode for testing car movement
 def run_calibration_test():
-    """
-    Interactive calibration mode.
-    """
     print("=" * 60)
     print("PICAR MOVEMENT CALIBRATION")
     print("=" * 60)
@@ -42,9 +31,6 @@ def run_calibration_test():
     print()
     print(f"Default duration: {TEST_DURATION} seconds")
     print(f"Motor power: {POWER}")
-    print()
-    print("TIP: Mark the car's starting position with tape,")
-    print("     then measure how far it travels.")
     print()
     print("-" * 60)
     
@@ -63,34 +49,25 @@ def run_calibration_test():
                 print("Motors stopped.")
             
             elif command == 't':
-                # Test forward and backward with current duration
                 print(f"\nTesting with duration = {current_duration}s")
-                print("Moving forward...")
                 move_forward(current_duration)
-                time.sleep(1)  # Pause between movements
-                print("Moving backward (returning to start)...")
+                time.sleep(1)
                 move_backward(current_duration)
-                print("Test complete. Did the car return to its starting position?")
+                print("Test complete.")
             
             elif command.startswith('f'):
-                # Parse duration from command like "f 0.5"
                 parts = command.split()
                 if len(parts) == 2:
                     try:
                         duration = float(parts[1])
                         current_duration = duration
                         move_forward(duration)
-                        print(f"\nMeasure the distance traveled!")
-                        print(f"If it was ~0.5 feet, this duration ({duration}s) is good for 1 point.")
-                        print(f"If too short, try a larger number. If too far, try smaller.")
                     except ValueError:
                         print("Invalid duration. Use format: f 0.5")
                 else:
-                    # No duration specified, use current
                     move_forward(current_duration)
             
             elif command.startswith('b'):
-                # Parse duration from command like "b 0.5"
                 parts = command.split()
                 if len(parts) == 2:
                     try:
@@ -114,11 +91,8 @@ def run_calibration_test():
             print(f"\nError: {e}")
             print("Motors stopped for safety.")
 
+# quick test that moves forward then backward
 def quick_test():
-    """
-    A simple one-shot test: move forward, pause, move backward.
-    Useful for verifying the car works at all.
-    """
     print("Quick test: Forward 0.5s, pause, backward 0.5s")
     print("Starting in 2 seconds...")
     time.sleep(2)
@@ -129,7 +103,6 @@ def quick_test():
     
     print("\nQuick test complete!")
 
-# Main execution
 if __name__ == "__main__":
     print()
     print("What would you like to do?")
@@ -147,6 +120,5 @@ if __name__ == "__main__":
         print("Invalid choice. Running quick test by default.")
         quick_test()
     
-    # Always ensure motors are stopped when script ends
     fc.stop()
     print("\nMotors stopped. Script ended.")
